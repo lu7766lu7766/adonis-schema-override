@@ -3,8 +3,7 @@ import { Rule, SchemaLiteral } from "@ioc:Adonis/Core/Validator"
 
 declare module "@ioc:Adonis/Core/Validator" {
   interface Rules {
-    stringRequired(): Rule
-    numberRequired(): Rule
+    defined(): Rule
   }
 }
 
@@ -13,16 +12,17 @@ export default class ClassValidatorProvider {
   constructor(protected app: ApplicationContract) {}
 
   public async boot() {
+    this.addRules()
     this.overrideStringSchema()
     this.overrideNumberSchema()
   }
 
-  private overrideStringSchema() {
-    const { schema, validator, rules } = this.app.container.use("Adonis/Core/Validator")
+  private addRules() {
+    const { validator } = this.app.container.use("Adonis/Core/Validator")
     validator.rule(
-      "stringRequired",
+      "defined",
       (value, _, options) => {
-        if (typeof value !== "string") {
+        if (value === undefined || value === null) {
           options.errorReporter.report(options.pointer, "required", "required validation failed", options.arrayExpressionPointer)
         }
       },
@@ -30,10 +30,13 @@ export default class ClassValidatorProvider {
         allowUndefineds: true,
       })
     )
+  }
 
+  private overrideStringSchema() {
+    const { schema, rules } = this.app.container.use("Adonis/Core/Validator")
     function myString(...args) {
       let option = {}
-      let params: Rule[] = [rules.stringRequired()]
+      let params: Rule[] = [rules.defined()]
       if (args.length === 1) {
         params = params.concat(args[0])
       } else if (args.length === 2) {
@@ -52,21 +55,10 @@ export default class ClassValidatorProvider {
   }
 
   private overrideNumberSchema() {
-    const { schema, validator, rules } = this.app.container.use("Adonis/Core/Validator")
+    const { schema, rules } = this.app.container.use("Adonis/Core/Validator")
 
-    validator.rule(
-      "numberRequired",
-      (value, _, options) => {
-        if (isNaN(+value)) {
-          options.errorReporter.report(options.pointer, "required", "required validation failed", options.arrayExpressionPointer)
-        }
-      },
-      () => ({
-        allowUndefineds: true,
-      })
-    )
     function myNumber(...args) {
-      let params: Rule[] = [rules]
+      let params: Rule[] = [rules.defined()]
       if (args.length === 1) {
         params = params.concat(args[0])
       }
