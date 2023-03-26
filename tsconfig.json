@@ -1,0 +1,28 @@
+{
+  "extends": "./node_modules/@adonisjs/mrm-preset/_tsconfig",
+  "include": [
+    "**/*"
+  ],
+  "exclude": [
+    "node_modules",
+    "build"
+  ],
+  "compilerOptions": {
+    "resolveJsonModule": true,
+    "target": "es6",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "strict": true,
+    "noUnusedLocals": true,
+    "noImplicitAny": false,
+    "pretty": true,
+    "lib": ["esnext"],
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "skipLibCheck": true,
+    "useDefineForClassFields": true,
+    "outDir": "build",
+    "rootDir": "./",
+    "types": ["@adonisjs/core"]
+  }
+}

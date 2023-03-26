@@ -1,0 +1,33 @@
+{
+  "name": "@lu7766lu7766/adonis-schema-override",
+  "version": "1.0.0",
+  "description": "",
+  "main": "build/providers/SchemaOverrideProvider.js",
+  "scripts": {
+    "clean": "rm -rf build",
+    "build": "tsc",
+    "publish": "npm publish --access public",
+    "deploy": "npm run clean && npm run build && npm version patch && npm run publish"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lu7766lu7766/adonis-schema-override.git"
+  },
+  "homepage": "https://github.com/lu7766lu7766/adonis-schema-override.git",
+  "files": [
+    "build/providers"
+  ],
+  "adonisjs": {
+    "types": "@lu7766lu7766/adonis-schema-override",
+    "providers": [
+      "@adonisjs/validator",
+      "@lu7766lu7766/adonis-schema-override"
+    ]
+  },
+  "author": "Jac",
+  "license": "ISC",
+  "dependencies": {
+    "@adonisjs/core": "^5.9.0",
+    "@adonisjs/mrm-preset": "^5.0.3"
+  }
+}
