@@ -4,6 +4,7 @@ import { Rule, SchemaLiteral } from "@ioc:Adonis/Core/Validator"
 declare module "@ioc:Adonis/Core/Validator" {
   interface Rules {
     defined(): Rule
+    definedNotEmpty(): Rule
   }
 }
 
@@ -23,6 +24,17 @@ export default class ClassValidatorProvider {
       "defined",
       (value, _, options) => {
         if (value === undefined || value === null) {
+          options.errorReporter.report(options.pointer, "required", "required validation failed", options.arrayExpressionPointer)
+        }
+      },
+      () => ({
+        allowUndefineds: true,
+      })
+    )
+    validator.rule(
+      "definedNotEmpty",
+      (value, _, options) => {
+        if (value === undefined || value === null || value === "") {
           options.errorReporter.report(options.pointer, "required", "required validation failed", options.arrayExpressionPointer)
         }
       },
@@ -58,7 +70,7 @@ export default class ClassValidatorProvider {
     const { schema, rules } = this.app.container.use("Adonis/Core/Validator")
 
     function myNumber(...args) {
-      let params: Rule[] = [rules.defined()]
+      let params: Rule[] = [rules.definedNotEmpty()]
       if (args.length === 1) {
         params = params.concat(args[0])
       }
