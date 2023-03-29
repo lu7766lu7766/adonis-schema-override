@@ -12,6 +12,15 @@ npm install @lu7766lu7766/adonis-schema-override
 node ace invoke @lu7766lu7766/adonis-schema-override
 ```
 
+## Usage
+
+```bash
+schema.string() // "" or "hello"
+schema.string.required() // cannot empty
+
+schema.number() // number
+```
+
 ## 📝 Contributing
 
 If you find any issue, bug or missing feature, please kindly create an issue or submit a pull request.

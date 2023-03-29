@@ -63,6 +63,20 @@ export default class ClassValidatorProvider {
     myString.nullable = schema.string.nullable
     myString.optional = schema.string.optional
     myString.nullableAndOptional = schema.string.nullableAndOptional
+    myString.required = function (...args) {
+      let option = {}
+      let params: Rule[] = [rules.required()]
+      if (args.length === 1) {
+        params = params.concat(args[0])
+      } else if (args.length === 2) {
+        option = args[0]
+        params = params.concat(args[1])
+      }
+      return schema.string.optional(option, params) as {
+        t: string
+        getTree: () => SchemaLiteral
+      }
+    }
     schema.string = myString
   }
 
